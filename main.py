@@ -42,7 +42,7 @@ def play_game():
             message = "Invalid input. Please enter a number."
 
     play_sound = session.pop("play_sound", False)
-    return render_template("index.html",, message=message, guesses=guesses, play_sound=play_sound)
+    return render_template("index.html", message=message, guesses=guesses, play_sound=play_sound)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81)
