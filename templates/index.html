@@ -1,158 +1,141 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-	<title>Python Flask ReplAuth</title>
-<script src="https://replit.com/public/js/repl-auth-v2.js"></script>
+  <meta charset="UTF-8">
+  <title>Guess the Number</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f9;
+      --text-color: #333;
+      --card-bg: white;
+      --input-bg: white;
+      --btn-bg: #4CAF50;
+      --btn-hover: #45a049;
+    }
+
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #eee;
+      --card-bg: #1e1e1e;
+      --input-bg: #333;
+      --btn-bg: #007bff;
+      --btn-hover: #0056b3;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      transition: all 0.3s ease;
+    }
+
+    h2, p {
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    input[type="number"] {
+      padding: 8px;
+      font-size: 1rem;
+      width: 80px;
+      margin-right: 10px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+      border: 1px solid #ccc;
+    }
+
+    input[type="submit"] {
+      padding: 8px 16px;
+      font-size: 1rem;
+      background-color: var(--btn-bg);
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: var(--btn-hover);
+    }
+
+    .toggle-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .toggle-btn:hover {
+      background-color: var(--btn-hover);
+    }
+
+
+  </style>
 </head>
+
 <body>
-	{% if user_id %}
-	<center>
-  <div class="box">
-    <center>
-    <div class="box-text-auth">
-      <p>
-        Hello, {{ user_name }}! ({{ user_id }})
-      </p>
-    </div>
-  <img src="{{ user_profile_image }}" width="200">
-    <center>
-  </center>
-  </div>
-	{% else %}
-  <center>
-    <center>
-      <div class="box">
-        <div class="box-text">
-            <h1>Hello!</h1>
-        </div>
-        <div class="box-button">
-          <button onclick="LoginWithReplit()"> Login w/ replit</button>
-        </div>
-    </center>
+<button class="toggle-btn" onclick="toggleTheme()">Toggle Dark Mode</button>
+
+  <div class="container fade-in">
+    <h2>I'm thinking of a number between 1 and 20.</h2>
+
+    {% if message %}
+      <p><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    <form method="post">
+      <input type="number" name="guess" min="1" max="20" required>
+      <input type="submit" value="Guess">
+    </form>
+
+    <form method="post" style="margin-top: 10px;">
+      <input type="hidden" name="action" value="reset">
+      <button type="submit">🔄 Reset Game</button>
+    </form>
+
+    {% if guesses %}
+      <div class="guess-history">
+        <h3>Your Guesses:</h3>
+        <ul>
+          {% for g in guesses %}
+            <li>{{ g }}</li>
+          {% endfor %}
+        </ul>
       </div>
-  </center>
+    {% endif %}
+  </div>
 
-	{% endif %}
+  {% if play_sound %}
+    <audio autoplay>
+      <source src="https://www.soundjay.com/buttons/sounds/button-3.mp3" type="audio/mpeg">
+    </audio>
+  {% endif %}
+  <script>
+    // Remember the user's theme preference
+    const isDark = localStorage.getItem('theme') === 'dark';
+    if (isDark) document.body.classList.add('dark');
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+      const current = document.body.classList.contains('dark') ? 'dark' : 'light';
+      localStorage.setItem('theme', current);
+    }
+  </script>
+
 </body>
-<style>
-  html, body {
-  height: 100%;
-  width: 100%;
-  background-color:#121212;
-}
-
-@font-face {
-  font-family: "Font";
-  src: url("https://css.replit.cool/Chess/src/fonts/Poppins-Bold[1].ttf");
-}
-
-h1{
-  font-family:"Font";
-  font-size:75px;
-  color:#00bbf9;
-}
-
-p{
-  font-family:"Font";
-  font-size:22px;
-  color:#00bbf9;
-}
-
-a{
-  font-family:"Font";
-  color:white;
-  font-size:22px;
-  text-decoration:none;
-  cursor:help;
-  text-shadow:2px 2px #00bbf9;
-}
-
-address{
-  font-family:"Font";
-  font-size:18px;
-  text-shadow:2px 2px #00bbf9;
-}
-
-summary{
-  font-family:"Font";
-  font-size:20px;
-  text-shadow:2px 2px #c400fa;
-  transition:0.7s;
-}
-
-details{
-  font-family:"Font";
-  font-size:20px;
-  text-shadow:2px 2px #c400fa;
-}
-
-::placeholder{
-  font-family:"Font";
-  font-size:25px;
-  color:#787878;
-}
-
-button{
-  width:200px;
-  height:55px;
-  font-family:"Trebuchet MS";
-  font-size:25px;
-  box-shadow:4px 4px white;
-  border-color:#00fa79;
-  color:white;
-  background-color:#00fa79;
-  border-radius:5px;
-}
-
-button:hover{
-  font-family:"Trebuchet MS";
-  font-size:25px;
-  background-color:white;
-  box-shadow:4px 4px #00fa79;
-  color:#00fa79;
-  border-radius:5px;
-  border-color:white;
-  transition:0.7s;
-}
-
-button:disabled{
-  font-family:"Trebuchet MS";
-  font-size:25px;
-  background-color:white;
-  box-shadow:4px 4px #00fa79;
-  border-radius:5px;
-  border-color:#121212;
-  cursor:not-allowed;
-  color:white;
-}
-
-.box-position{
-  position:relative;
-}
-  
-.box{
-  width:300px;
-  height:300px;
-  background-color:#495057;
-  border-radius:5px;
-  border-color:white;
-  position:relative;
-  top:150px;
-}
-
-.box-text{
-  position:relative;
-  top:60px;
-}
-
-.box-button{
-  position:relative;
-  top:20px;
-}
-
-.box-text-auth{
-  position:relative;
-  top:10px;
-}
-</style>
 </html>
