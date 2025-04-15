@@ -51,8 +51,8 @@ def play_game():
                 session["last_score"] = final_score 
 
 
-            except ValueError:
-                message = "Invalid input. Please enter a number."
+        except ValueError:
+            message = "Invalid input. Please enter a number."
 
         play_sound = session.pop("play_sound", False)
 
