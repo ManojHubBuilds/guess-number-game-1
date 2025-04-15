@@ -17,6 +17,8 @@ def play_game():
     message = ""
     guesses = session.get("guesses", [])
     score = session.get("score", 20)
+    play_sound = False
+
 
 
     if request.method == "POST":
