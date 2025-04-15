@@ -17,7 +17,7 @@ def play_game():
     message = ""
     guesses = session.get("guesses", [])
     score = session.get("score", 20)
-    play_sound = False
+    #play_sound = False
 
 
 
@@ -57,29 +57,32 @@ def play_game():
             message = "Invalid input. Please enter a number."
 
         play_sound = session.pop("play_sound", False)
-
-    
         score_to_display = session.get("last_score", session["score"])
 
-        # Emoji logic
-        emoji = ""
-        if score_to_display >= 18:
-            emoji = "🔥"
-        elif score_to_display >= 14:
-            emoji = "👍"
-        elif score_to_display >= 8:
-            emoji = "🙂"
-        else:
-            emoji = "😅"
+    else:
+        play_sound = False
+        score_to_display = score
 
-        return render_template("index.html",
-            message=message,
-            guesses=guesses,
-            play_sound=play_sound,
-            score=score_to_display,
-            emoji=emoji,
-            high_score=session.get("high_score", 0)
-        )
+
+    # Emoji logic
+    emoji = ""
+    if score_to_display >= 18:
+        emoji = "🔥"
+    elif score_to_display >= 14:
+        emoji = "👍"
+    elif score_to_display >= 8:
+        emoji = "🙂"
+    else:
+        emoji = "😅"
+
+    return render_template("index.html",
+        message=message,
+        guesses=guesses,
+        play_sound=play_sound,
+        score=score_to_display,
+        emoji=emoji,
+        high_score=session.get("high_score", 0)
+    )
 
 
 if __name__ == "__main__":
