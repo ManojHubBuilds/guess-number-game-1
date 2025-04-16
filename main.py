@@ -104,7 +104,7 @@ def play_game():
         play_sound=play_sound,
         score=score_to_display,
         emoji=emoji,
-        high_score=session.get("high_score", 0)
+        high_score=session.get("high_score", 0),
         leaderboard=session.get("leaderboard", []),
         name=session.get("name")
     )
@@ -112,4 +112,3 @@ def play_game():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=81)
-    
